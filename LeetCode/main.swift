@@ -22,4 +22,4 @@ print(subStr)
 TwoNum.test();
 AddTwoNumbers.test();
 LongestSubstring.test();
-
+MidianOfTwoSortedArrays.test();
