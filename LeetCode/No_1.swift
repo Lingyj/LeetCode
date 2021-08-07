@@ -78,7 +78,7 @@ class TwoNum {
         return (first, second);
     }
 
-    // 依旧是遍历，优化细节，第二轮上一轮结束的地方开始
+    // 依旧是遍历，优化细节，第二轮从上一轮结束的地方开始
     static func func2(nums: [Int], target: Int) -> (Int?, Int?) {
         var first : Int?
         var second : Int?
