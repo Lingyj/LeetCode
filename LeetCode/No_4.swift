@@ -11,13 +11,20 @@ class MidianOfTwoSortedArrays {
     static func test() -> Void {
 //        let nums1 = [1,3], nums2 = [2];
 //        let nums1 = [1,2], nums2 = [3,4];
-        let nums1 = [0,1,2,4,7], nums2 = [2,5,6];
+//        let nums1 = [0,1,2,4,7], nums2 = [2,5,6];
 //        let nums1 = [1,2,3,4,5], nums2 = [6,7,8];
 //        let nums1 = [1,2,3,4,5,6,7], nums2 = [9];
 
+        let nums1 = getRandomIntArrayWithMaxCount(count: 20).sorted(by: {$0 < $1});
+        let nums2 = getRandomIntArrayWithMaxCount(count: 20).sorted(by: {$0 < $1});
+        for i in 0..<nums1.count+nums2.count-2 {
+//            print(findMid(nums1: nums1, nums2: nums2, index: i));
+            print(getKthNumber(nums1, 0, nums1.count-1, nums2, 0, nums2.count-1, i+1))
+        }
         
-//        excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func1(nums1:nums2:));
-//        excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func2(nums1:nums2:));
+        
+        excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func1(nums1:nums2:));
+        excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func2(nums1:nums2:));
         excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func3(nums1:nums2:));
 //        excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func4(nums1:nums2:));
         
@@ -26,7 +33,7 @@ class MidianOfTwoSortedArrays {
 //        print(findMid(nums1: nums1, nums2: nums2, index: 2));
 //        print(findMid(nums1: nums1, nums2: nums2, index: 3));
 //        print(findMid(nums1: nums1, nums2: nums2, index: 4));
-        print(findMid(nums1: nums1, nums2: nums2, index: 5));
+//        print(findMid(nums1: nums1, nums2: nums2, index: 5));
 //        print(findMid(nums1: nums1, nums2: nums2, index: 6));
 //        print(findMid(nums1: nums1, nums2: nums2, index: 7));
     }
@@ -219,10 +226,10 @@ class MidianOfTwoSortedArrays {
     }
     
     static func findMid(nums1 : [Int], nums2 : [Int], index : Int) -> Int {
-        print(nums1);
-        print(nums2);
-        print(index);
-        print("---");
+//        print(nums1);
+//        print(nums2);
+//        print(index);
+//        print("---");
         
         // 有一个数组为0，直接取index
         if (nums1.count == 0 || nums2.count == 0) {
@@ -238,15 +245,15 @@ class MidianOfTwoSortedArrays {
         // 偏移的index
         var midIndex = 0;
         if (index <= minLenght) {
-            // 由于是index，所以新数组长度需要减1之后折半
+            // 由于是index(从0开始计)，所以新数组长度需要减1之后折半
             midIndex = (index-1) / 2;
         } else {
             // index大于数组长度，会导致越界，因此新的index为length-1
             midIndex = minLenght - 1;
         }
         
-        let newNums1 = Array(nums1[0..<(midIndex+1)]);
-        let newNums2 = Array(nums2[0..<(midIndex+1)]);
+        let newNums1 = Array(nums1[0...midIndex]);
+        let newNums2 = Array(nums2[0...midIndex]);
         
         if (newNums1.last! < newNums2.last!) {
             return findMid(nums1: Array(nums1[midIndex+1..<nums1.count]), nums2: nums2, index: index-midIndex-1);
