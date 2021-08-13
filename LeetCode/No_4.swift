@@ -8,44 +8,6 @@
 import Foundation
 
 class MidianOfTwoSortedArrays {
-    static func test() -> Void {
-//        let nums1 = [1,3], nums2 = [2];
-//        let nums1 = [1,2], nums2 = [3,4];
-//        let nums1 = [0,1,2,4,7], nums2 = [2,5,6];
-//        let nums1 = [1,2,3,4,5], nums2 = [6,7,8];
-//        let nums1 = [1,2,3,4,5,6,7], nums2 = [9];
-
-        let nums1 = getRandomIntArrayWithMaxCount(count: 20).sorted(by: {$0 < $1});
-        let nums2 = getRandomIntArrayWithMaxCount(count: 20).sorted(by: {$0 < $1});
-        for i in 0..<nums1.count+nums2.count-2 {
-//            print(findMid(nums1: nums1, nums2: nums2, index: i));
-            print(getKthNumber(nums1, 0, nums1.count-1, nums2, 0, nums2.count-1, i+1))
-        }
-        
-        
-        excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func1(nums1:nums2:));
-        excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func2(nums1:nums2:));
-        excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func3(nums1:nums2:));
-//        excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func4(nums1:nums2:));
-        
-//        print(findMid(nums1: nums1, nums2: nums2, index: 0));
-//        print(findMid(nums1: nums1, nums2: nums2, index: 1));
-//        print(findMid(nums1: nums1, nums2: nums2, index: 2));
-//        print(findMid(nums1: nums1, nums2: nums2, index: 3));
-//        print(findMid(nums1: nums1, nums2: nums2, index: 4));
-//        print(findMid(nums1: nums1, nums2: nums2, index: 5));
-//        print(findMid(nums1: nums1, nums2: nums2, index: 6));
-//        print(findMid(nums1: nums1, nums2: nums2, index: 7));
-    }
-    
-    static func excuteAndPrint(nums1 : [Int], nums2 : [Int] , excuteFunc: ([Int], [Int]) -> ([Int])) {
-        let date : NSDate = NSDate();
-        let rs = excuteFunc(nums1, nums2);
-        let duration = NSDate().timeIntervalSince(date as Date) * 1000;
-        let durationStr = String(format: "%.3f", duration);
-        print("result:\(rs), duration:\(durationStr)");
-    }
-    
     // 合并，排序，取中间值 😂
     static func func1(nums1 : [Int], nums2 : [Int]) -> [Int] {
         guard (nums1.count + nums2.count) > 2 else {
@@ -73,7 +35,7 @@ class MidianOfTwoSortedArrays {
         if (nums1.count == 0 || nums2.count == 0) {
             sortArray = nums1 + nums2;
         } else {
-            let maxIndex = nums1.count + nums2.count - 1;
+            let totalCount = nums1.count + nums2.count;
             
             let firstArrayFirstItem = nums1[0];
             let secondArrayFirstItem = nums2[0];
@@ -86,23 +48,21 @@ class MidianOfTwoSortedArrays {
             if (firstArrayFirstItem < secondArrayFirstItem) {
                 firstArrayIndex += 1;
                 cacheNum = secondArrayFirstItem;
-                sortArray.insert(firstArrayFirstItem, at: 0);
+                sortArray.append(firstArrayFirstItem);
             } else {
                 secondArrayIndex += 1;
                 cacheNum = firstArrayFirstItem;
-                sortArray.insert(secondArrayFirstItem, at: 0);
+                sortArray.append(secondArrayFirstItem);
             }
                         
-            for i in 1..<maxIndex{
-                var currentNum : Int;
-                if (firstArrayIndex == nums1.count) {
-                    currentNum = nums2[secondArrayIndex+1];
-                } else if (secondArrayIndex == nums2.count) {
-                    currentNum = nums1[firstArrayIndex+1];
-                } else {
-                    currentNum = isFirst ? nums1[firstArrayIndex] : nums2[secondArrayIndex];
+            for i in 1...totalCount{
+                if (firstArrayIndex == nums1.count || secondArrayIndex == nums2.count) {
+                    sortArray.append(contentsOf: nums1[firstArrayIndex..<nums1.count]);
+                    sortArray.append(contentsOf: nums2[secondArrayIndex..<nums2.count]);
+                    break;
                 }
-                    
+                
+                let currentNum = isFirst ? nums1[firstArrayIndex] : nums2[secondArrayIndex];
                 if (currentNum > cacheNum) {
                     isFirst = !isFirst;
                     sortArray.insert(cacheNum, at: i);
@@ -201,64 +161,107 @@ class MidianOfTwoSortedArrays {
     }
     
     static func func4(nums1 : [Int], nums2 : [Int]) -> [Int] {
-        guard (nums1.count + nums2.count > 2) else {
-            return nums1 + nums2;
-        }
-
-        let mid1 : Int = (nums1.count-1) / 2;
-        let sub1 = nums1[0...mid1];
-        let sub2 = nums1[mid1+1...nums1.count-1];
-        
-        let mid2 : Int = (nums2.count-1) / 2;
-        let sub3 = nums2[0...mid2];
-        let sub4 = nums2[mid2+1...nums2.count-1];
-        
-        let newNums1 = sub1.last! < sub3.last! ? Array(sub3) : Array(sub1);
-        var newNums2 : [Int];
-        if (sub2.first == nil) {
-            newNums2 = Array(sub4);
-        } else if (sub4.first == nil) {
-            newNums2 = Array(sub2);
-        } else {
-            newNums2 = (sub2.first! < sub4.first! ? Array(sub2) : Array(sub4));
-        }
-        return func4(nums1: newNums1, nums2: newNums2);
+        let i = findMid(nums1: nums1, nums2: nums2, index: (nums1.count+nums2.count+1)/2);
+        let j = findMid(nums1: nums1, nums2: nums2, index: (nums1.count+nums2.count+2)/2);
+        return [i, j];
     }
     
+    // index从1开始计数
     static func findMid(nums1 : [Int], nums2 : [Int], index : Int) -> Int {
-//        print(nums1);
-//        print(nums2);
-//        print(index);
-//        print("---");
-        
-        // 有一个数组为0，直接取index
-        if (nums1.count == 0 || nums2.count == 0) {
-            return (nums1+nums2)[index];
+        if (nums1.count > nums2.count) {
+            return findMid(nums1: nums2, nums2: nums1, index: index);
         }
-
-        // index为0，仅需比较第一个
-        if (index == 0) {
+        
+        // 第一个数组为0，直接取第二个数组
+        if (nums1.count == 0) {
+            return nums2[index-1];
+        }
+        
+        // 递归结束
+        if (index == 1) {
             return min(nums1.first!, nums2.first!);
         }
 
         let minLenght = min(nums1.count, nums2.count);
         // 偏移的index
-        var midIndex = 0;
-        if (index <= minLenght) {
-            // 由于是index(从0开始计)，所以新数组长度需要减1之后折半
-            midIndex = (index-1) / 2;
-        } else {
-            // index大于数组长度，会导致越界，因此新的index为length-1
-            midIndex = minLenght - 1;
-        }
+        // index/2 保证只丢掉index前面的数据
+        var offsetIndex = index / 2;
+        // ⚠️坑点: 如果数组长度小于index，则不能折半，只能取最小数组长度，否则将越界⚠️
+        offsetIndex = min(offsetIndex, minLenght);
         
-        let newNums1 = Array(nums1[0...midIndex]);
-        let newNums2 = Array(nums2[0...midIndex]);
+        let newNums1 = Array(nums1[0..<offsetIndex]);
+        let newNums2 = Array(nums2[0..<offsetIndex]);
         
         if (newNums1.last! < newNums2.last!) {
-            return findMid(nums1: Array(nums1[midIndex+1..<nums1.count]), nums2: nums2, index: index-midIndex-1);
+            return findMid(nums1: Array(nums1[offsetIndex..<nums1.count]), nums2: nums2, index: index-offsetIndex);
         } else {
-            return findMid(nums1: nums1, nums2: Array(nums2[midIndex+1..<nums2.count]), index: index-midIndex-1);
+            return findMid(nums1: nums1, nums2: Array(nums2[offsetIndex..<nums2.count]), index: index-offsetIndex);
         }
+    }
+    
+    //MARK: - print
+    static func excuteAndPrint(nums1 : [Int], nums2 : [Int] , excuteFunc: ([Int], [Int]) -> ([Int])) {
+        let date : NSDate = NSDate();
+        let rs = excuteFunc(nums1, nums2);
+        let duration = NSDate().timeIntervalSince(date as Date) * 1000;
+        let durationStr = String(format: "%.3f", duration);
+        print("result:\(rs), duration:\(durationStr)");
+    }
+    
+    // MARK: - test
+    static func test() -> Void {
+//        let nums1 = [1,3], nums2 = [2];
+//        let nums1 = [1,2], nums2 = [3,4];
+//        let nums1 = [0,1,2,4,7], nums2 = [2,5,6];
+//        let nums1 = [1,2,3,4,5], nums2 = [6,7,8];
+//        let nums1 = [1,2,3,4,5,6,7], nums2 = [9];
+
+//        let nums1 = getRandomIntArrayWithMaxCount(count: 20).sorted(by: {$0 < $1});
+//        let nums2 = getRandomIntArrayWithMaxCount(count: 20).sorted(by: {$0 < $1});
+        
+        
+        let nums1 = [1, 1, 2, 3];
+        let nums2 = [1, 1, 3, 3, 7, 7, 8, 10, 10, 11, 11, 11, 12, 13, 13, 15, 17, 17];
+        
+        print(nums1);
+        print(nums2);
+        
+        excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func1(nums1:nums2:));
+        excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func2(nums1:nums2:));
+//        excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func3(nums1:nums2:));
+        excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func4(nums1:nums2:));
+    }
+    
+    static func testFindMid () -> () {
+        let nums1 = getRandomIntArrayWithMaxCount(count: 20).sorted(by: {$0 < $1});
+        let nums2 = getRandomIntArrayWithMaxCount(count: 20).sorted(by: {$0 < $1});
+    
+        var result : [Int] = [];
+        let sort = (nums1 + nums2).sorted();
+        
+        for i in 1...(nums1.count+nums2.count) {
+            result.append(findMid(nums1: nums1, nums2: nums2, index: i));
+        }
+        
+        var isCorrect = true;
+        var errorIndex = 0;
+        for index in 0..<sort.count {
+            if (isCorrect == false) {
+                errorIndex = index;
+                break;
+            }
+            
+            let i = result[index];
+            let j = sort[index];
+            isCorrect = (i == j);
+        }
+        
+        if (isCorrect == false) {
+            print("nums1:\(nums1)");
+            print("nums2:\(nums2)");
+            print("errorAt:\(errorIndex)");
+        }
+        
+        assert(isCorrect);
     }
 }
