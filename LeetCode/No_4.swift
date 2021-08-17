@@ -216,12 +216,12 @@ class MidianOfTwoSortedArrays {
 //        let nums1 = [1,2,3,4,5], nums2 = [6,7,8];
 //        let nums1 = [1,2,3,4,5,6,7], nums2 = [9];
 
-//        let nums1 = getRandomIntArrayWithMaxCount(count: 20).sorted(by: {$0 < $1});
-//        let nums2 = getRandomIntArrayWithMaxCount(count: 20).sorted(by: {$0 < $1});
+        let nums1 = getRandomIntArrayWithMaxCount(count: 20).sorted(by: {$0 < $1});
+        let nums2 = getRandomIntArrayWithMaxCount(count: 20).sorted(by: {$0 < $1});
         
         
-        let nums1 = [1, 1, 2, 3];
-        let nums2 = [1, 1, 3, 3, 7, 7, 8, 10, 10, 11, 11, 11, 12, 13, 13, 15, 17, 17];
+//        let nums1 = [1, 1, 2, 3];
+//        let nums2 = [1, 1, 3, 3, 7, 7, 8, 10, 10, 11, 11, 11, 12, 13, 13, 15, 17, 17];
         
         print(nums1);
         print(nums2);

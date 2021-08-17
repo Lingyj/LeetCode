@@ -9,7 +9,6 @@ import Foundation
 
 print("Hello, World!")
 
-
 // 截取子字符串
 var str = "hello, world!  telephone =12345"
 let startIndex = str.startIndex
@@ -23,3 +22,4 @@ TwoNum.test();
 AddTwoNumbers.test();
 LongestSubstring.test();
 MidianOfTwoSortedArrays.test();
+LongestPalindromicSubstring.test();

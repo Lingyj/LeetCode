@@ -7,16 +7,44 @@
 
 import Foundation
 
+/// 获取随机数组，数组最大值不会超过数组长度*5
+/// - Parameter count: 数组最大长度
+/// - Returns: 随机数组
 public func getRandomIntArrayWithMaxCount(count : Int) -> [Int] {
     let count = Int(arc4random_uniform(UInt32(count)));
     var array : [Int] = [];
     for i in 0..<count {
-        let value = Int(arc4random_uniform(UInt32(count)));
+        let max = count*5;
+        let value = Int(arc4random_uniform(UInt32(max)));
         array.insert(value, at: i);
     }
     return array;
 }
 
+/// 获取随机字符串（小写）
+/// - Parameter length: 字符串长度
+/// - Returns: 随机字符串
+public func getRandomStringWithLength(length : Int, letter : (() -> String)) -> String {
+    var string = "";
+    for _ in 0..<length {
+        string.append(letter());
+    }
+    return string;
+}
+
+/// 获取随机字母（小写）
+/// - Returns: 字母
+public func getRandomLetter() -> String {
+    let randomCode = Int(arc4random_uniform(UInt32(26)));
+    let string = String(UnicodeScalar(97 + randomCode) ?? "a");    
+    return string;
+}
+
+public func getRandomLetter2() -> String {
+    let randomCode = Int(arc4random_uniform(UInt32(5)));
+    let string = String(UnicodeScalar(97 + randomCode) ?? "a");
+    return string;
+}
 
 func findMedianSortedArrays(_ nums1: [Int], _ nums2: [Int]) -> Double {
     let lenght_n = nums1.count
