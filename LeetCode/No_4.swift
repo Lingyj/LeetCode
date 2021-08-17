@@ -55,10 +55,11 @@ class MidianOfTwoSortedArrays {
                 sortArray.append(secondArrayFirstItem);
             }
                         
-            for i in 1...totalCount{
+            for i in 1...totalCount {
                 if (firstArrayIndex == nums1.count || secondArrayIndex == nums2.count) {
                     sortArray.append(contentsOf: nums1[firstArrayIndex..<nums1.count]);
                     sortArray.append(contentsOf: nums2[secondArrayIndex..<nums2.count]);
+                    cacheNum = NSIntegerMax;
                     break;
                 }
                 
@@ -78,7 +79,9 @@ class MidianOfTwoSortedArrays {
                 }
             }
             
-            sortArray.append(cacheNum);
+            if (cacheNum != NSIntegerMax) {
+                sortArray.append(cacheNum);
+            }
         }
         
         if (sortArray.count % 2 == 0) {
