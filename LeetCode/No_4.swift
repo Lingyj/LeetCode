@@ -230,6 +230,8 @@ class MidianOfTwoSortedArrays {
         excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func2(nums1:nums2:));
 //        excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func3(nums1:nums2:));
         excuteAndPrint(nums1: nums1, nums2: nums2, excuteFunc: func4(nums1:nums2:));
+        
+        testFindMid();
     }
     
     static func testFindMid () -> () {
