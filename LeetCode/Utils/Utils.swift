@@ -11,7 +11,8 @@ import Foundation
 /// - Parameter count: 数组最大长度
 /// - Returns: 随机数组
 public func getRandomIntArrayWithMaxCount(count : Int) -> [Int] {
-    let count = Int(arc4random_uniform(UInt32(count)));
+//    let count = Int(arc4random_uniform(UInt32(count)));
+    let count = Int.random(in: 1...count)
     var array : [Int] = [];
     for i in 0..<count {
         let max = count*5;

@@ -174,6 +174,10 @@ class MidianOfTwoSortedArrays {
         let nums1 = getRandomIntArrayWithMaxCount(count: 20).sorted(by: {$0 < $1});
         let nums2 = getRandomIntArrayWithMaxCount(count: 20).sorted(by: {$0 < $1});
     
+        guard (nums1.count + nums2.count) > 2 else {
+            return
+        }
+        
         var result : [Int] = [];
         let sort = (nums1 + nums2).sorted();
         
