@@ -104,8 +104,11 @@ let d : Double = 1.0 / 3.0;
 print(d.isFinite);
 
 //MARK: - Leetcode
+print("============ test start ============");
+
 TwoNum.test();
 AddTwoNumbers.test();
 LongestSubstring.test();
 MidianOfTwoSortedArrays.test();
 LongestPalindromicSubstring.test();
+ZigZagConversion.test();
